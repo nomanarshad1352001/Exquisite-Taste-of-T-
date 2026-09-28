@@ -1,0 +1,196 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@300..700&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --color-charcoal: #161311;
+  --color-night: #100d0b;
+  --color-espresso: #2a211c;
+  --color-cocoa: #201915;
+  --color-gold: #c9a24b;
+  --color-gold-soft: #e6d3a3;
+  --color-burgundy: #6e1f2a;
+  --color-burgundy-deep: #571824;
+  --color-ivory: #f4eee4;
+  --color-ink: #211d1a;
+
+  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  --animate-marquee: marquee 46s linear infinite;
+  --animate-testrail: testrail 60s linear infinite;
+  --animate-photorail: testrail 75s linear infinite;
+  --animate-fade-in: fade-in 1s ease forwards;
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes testrail {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes shimmer-slide {
+    to {
+      background-position: -200% center;
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+html {
+  scroll-padding-top: 5.5rem;
+}
+
+body {
+  background-color: #161311;
+  color: #f4eee4;
+  overflow-x: hidden;
+}
+
+/* ---- film grain overlay ---- */
+.grain {
+  position: fixed;
+  inset: -50%;
+  z-index: 80;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 240px 240px;
+}
+
+/* ---- ghost outline display text ---- */
+.text-ghost {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(201, 162, 75, 0.28);
+}
+
+/* ---- shimmering gold text ---- */
+.text-shimmer {
+  background: linear-gradient(100deg, #c9a24b 15%, #f4eee4 38%, #e6d3a3 50%, #f4eee4 62%, #c9a24b 85%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer-slide 7s linear infinite;
+}
+
+/* ---- gold underline sweep for nav links ---- */
+.link-sweep {
+  position: relative;
+}
+.link-sweep::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  height: 1px;
+  width: 100%;
+  background: #c9a24b;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.link-sweep:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ---- button sweep + micro-scale ---- */
+.btn-lux,
+.btn-lux-dark {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transition:
+    color 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.btn-lux::before,
+.btn-lux-dark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  transform: translateY(102%);
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.btn-lux::before {
+  background: #c9a24b;
+}
+.btn-lux-dark::before {
+  background: #161311;
+}
+.btn-lux:hover::before,
+.btn-lux-dark:hover::before {
+  transform: translateY(0);
+}
+.btn-lux:hover {
+  color: #161311;
+  border-color: #c9a24b;
+  transform: scale(1.02);
+}
+.btn-lux-dark:hover {
+  color: #f4eee4;
+  border-color: #161311;
+  transform: scale(1.02);
+}
+.btn-lux:active,
+.btn-lux-dark:active {
+  transform: scale(0.99);
+}
+
+/* ---- selection + scrollbar ---- */
+::selection {
+  background: #c9a24b;
+  color: #161311;
+}
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #100d0b;
+}
+::-webkit-scrollbar-thumb {
+  background: #3b2f26;
+  border-radius: 999px;
+  border: 2px solid #100d0b;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #c9a24b;
+}
+
+/* ---- dark autofill ---- */
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #201915 inset;
+  -webkit-text-fill-color: #f4eee4;
+  caret-color: #f4eee4;
+  transition: background-color 9999s ease-out;
+}
+
+/* ---- pause marquee on hover ---- */
+.marquee-track:hover > * {
+  animation-play-state: paused;
+}
+
+/* ---- reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
